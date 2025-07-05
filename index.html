@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="Pediatric Wrist Fracture Detection in X-rays via YOLOv10 Algorithm and Dual Label Assignment System"
+    />
+    <meta
+      name="keywords"
+      content="YOLOv10, Fracture Detection, Medical AI, Computer Vision, X-ray Analysis, Pediatric Medicine, Object Detection, GRAZPEDWRI-DX, Deep Learning"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YOLOv10 Pediatric Wrist Fracture Detection</title>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"
+    />
+
+    <style>
+      .hero-body {
+        padding: 3rem 1.5rem;
+      }
+      .publication-title {
+        margin-bottom: 1rem;
+      }
+      .author-block {
+        margin-right: 1rem;
+      }
+      .content img {
+        max-width: 100%;
+        height: auto;
+        margin: 1rem 0;
+      }
+      .caption {
+        font-style: italic;
+        margin-top: 0.5rem;
+        text-align: center;
+      }
+      .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+      .image-item {
+        flex: 1;
+        min-width: 300px;
+        max-width: 45%;
+      }
+      .results-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+      .result-item {
+        text-align: center;
+      }
+      .result-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      .highlight-box {
+        background-color: #f0f7ff;
+        border-left: 4px solid #3273dc;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-radius: 4px;
+      }
+      .metric-highlight {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        border: 1px solid #e9ecef;
+      }
+      .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+      .tech-badge {
+        background-color: #3273dc;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+      }
+      table {
+        font-size: 0.85rem;
+      }
+      .research-question {
+        background-color: #fff5f5;
+        border-left: 4px solid #ff6b6b;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 4px;
+      }
+      .improvement-highlight {
+        background-color: #e8f5e8;
+        border-left: 4px solid #48c774;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 4px;
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        function copyBibtex() {
+          const bibtex = `@article{ahmed2024pediatric,
+  title     = {Pediatric Wrist Fracture Detection in X-rays via YOLOv10 Algorithm and Dual Label Assignment System},
+  author    = {Ahmed, Ammar and Manaf, Abdul},
+  year      = {2024},
+  journal   = {arXiv},
+  eprint    = {2407.15689},
+  note      = {arXiv:2407.15689},
+  url       = {https://doi.org/10.48550/arXiv.2407.15689},
+  doi       = {10.48550/arXiv.2407.15689}
+}`;
+          navigator.clipboard.writeText(bibtex).then(
+            function () {
+              alert("BibTeX copied to clipboard!");
+            },
+            function () {
+              alert("Failed to copy BibTeX.");
+            }
+          );
+        }
+        window.copyBibtex = copyBibtex;
+      });
+    </script>
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-widescreen">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">
+                🏥 Pediatric Wrist Fracture Detection in X-rays via <br />
+                YOLOv10 Algorithm and Dual Label Assignment System
+              </h1>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="#">Ammar Ahmed</a><sup>1</sup>,</span
+                >&nbsp;
+                <span class="author-block">
+                  <a href="#">Abdul Manaf</a><sup>2</sup>
+                </span>
+              </div>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"
+                  ><sup>1</sup>Department of Computer Science</span
+                ><br />
+                <span class="author-block"
+                  ><sup>2</sup>Research Affiliation</span
+                >
+              </div>
+
+              <div class="is-size-5 has-text-centered">
+                <span class="publication-cvpr"
+                  ><strong
+                    >arXiv:2407.15689 [eess.IV] (July 2024)</strong
+                  ></span
+                >
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a
+                      href="https://arxiv.org/abs/2407.15689"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="ai ai-arxiv"></i></span>
+                      <span>arXiv</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a
+                      href="https://arxiv.org/pdf/2407.15689"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                      <span>PDF</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a
+                      href="https://github.com/ammarlodhi255/YOLOv10-Fracture-Detection"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="fab fa-github"></i></span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a
+                      href="https://figshare.com/articles/dataset/GRAZPEDWRI-DX/14825193"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="fas fa-database"></i></span>
+                      <span>Dataset</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a
+                      href="https://figshare.com/articles/online_resource/Weights/26343553"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="fas fa-weight-hanging"></i></span>
+                      <span>Weights</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a
+                      href="#"
+                      onclick="copyBibtex()"
+                      class="external-link button is-normal is-rounded is-dark"
+                    >
+                      <span class="icon"><i class="fas fa-file-alt"></i></span>
+                      <span>BibTeX</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <!-- Abstract -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Wrist fractures are highly prevalent among children and can significantly impact
+                their daily activities, such as attending school, participating in sports, and
+                performing basic self-care tasks. If not treated properly, these fractures can
+                result in chronic pain, reduced wrist functionality, and other long-term
+                complications. Recently, advancements in object detection have shown promise in
+                enhancing fracture detection, with systems achieving accuracy comparable to, or even
+                surpassing, that of human radiologists.
+              </p>
+              <p>
+                The <strong>YOLO series</strong>, in particular, has demonstrated notable success in this domain.
+                This study is the first to provide a thorough evaluation of various
+                <strong>YOLOv10 variants</strong> to assess their performance in detecting pediatric
+                wrist fractures using the <strong>GRAZPEDWRI-DX dataset</strong>. It investigates how changes in
+                model complexity, scaling the architecture, and implementing a dual-label assignment
+                strategy can enhance detection performance.
+              </p>
+              <div class="improvement-highlight">
+                <p>
+                  <strong>Key Achievement:</strong> Our trained model achieved mean average precision 
+                  (mAP@50-95) of <strong>51.9%</strong> surpassing the current YOLOv9 benchmark of 43.3% 
+                  on this dataset. This represents an improvement of <strong>8.6%</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Model Architecture -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">YOLOv10 Architecture</h2>
+            <div class="content has-text-justified">
+              <div style="text-align: center; margin: 2rem 0">
+                <img
+                  src="img/YOLOv10(architecture).png"
+                  alt="YOLOv10 Architecture"
+                  style="max-width: 100%"
+                />
+                <p class="caption">
+                  <b>YOLOv10 Model Architecture:</b> Overview of the YOLOv10 architecture 
+                  used for pediatric wrist fracture detection
+                </p>
+              </div>
+
+              <div class="highlight-box">
+                <h4 class="title is-5">Key Architecture Features:</h4>
+                <ul style="text-align: left">
+                  <li>
+                    <strong>Advanced Backbone:</strong> Improved feature extraction capabilities
+                  </li>
+                  <li>
+                    <strong>Dual Label Assignment:</strong> Enhanced training strategy for better performance
+                  </li>
+                  <li>
+                    <strong>Multiple Variants:</strong> N, S, M, L, X variants with different complexity levels
+                  </li>
+                  <li>
+                    <strong>Optimized Detection Head:</strong> Specialized for medical imaging applications
+                  </li>
+                </ul>
+              </div>
+
+              <div class="tech-stack">
+                <span class="tech-badge">PyTorch 2.0.1</span>
+                <span class="tech-badge">YOLOv10</span>
+                <span class="tech-badge">OpenCV</span>
+                <span class="tech-badge">Gradio</span>
+                <span class="tech-badge">ONNX Runtime</span>
+                <span class="tech-badge">PyYAML</span>
+                <span class="tech-badge">SciPy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance Comparison -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Performance Comparison: YOLOv9 vs YOLOv10</h2>
+            <div class="content has-text-justified">
+              <div class="highlight-box">
+                <p>
+                  <strong>Comprehensive Evaluation:</strong> Our study provides the first comprehensive 
+                  evaluation of YOLOv10 variants on pediatric wrist fracture detection, demonstrating 
+                  significant improvements over YOLOv9 benchmarks.
+                </p>
+              </div>
+
+              <div style="overflow-x: auto; margin: 2rem 0">
+                <table class="table is-striped is-hoverable is-fullwidth">
+                  <thead>
+                    <tr>
+                      <th>Variant</th>
+                      <th>mAP@50 (%)</th>
+                      <th>mAP@50-95 (%)</th>
+                      <th>F1 (%)</th>
+                      <th>Params (M)</th>
+                      <th>FLOPs (G)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="has-background-warning-light">
+                      <td colspan="6" style="text-align: center; font-weight: bold;">YOLOv9 Baselines</td>
+                    </tr>
+                    <tr>
+                      <td>YOLOv9-C</td>
+                      <td>65.3</td>
+                      <td>42.7</td>
+                      <td>64.0</td>
+                      <td>51.0</td>
+                      <td>239.0</td>
+                    </tr>
+                    <tr>
+                      <td>YOLOv9-E</td>
+                      <td>65.5</td>
+                      <td>43.3</td>
+                      <td>64.0</td>
+                      <td>69.4</td>
+                      <td>244.9</td>
+                    </tr>
+                    <tr>
+                      <td>YOLOv9-C'</td>
+                      <td>66.2</td>
+                      <td>45.2</td>
+                      <td>66.7</td>
+                      <td>25.3</td>
+                      <td>102.4</td>
+                    </tr>
+                    <tr>
+                      <td>YOLOv9-E'</td>
+                      <td>67.0</td>
+                      <td>44.9</td>
+                      <td>70.9</td>
+                      <td>57.4</td>
+                      <td>189.2</td>
+                    </tr>
+                    <tr class="has-background-success-light">
+                      <td colspan="6" style="text-align: center; font-weight: bold;">YOLOv10 Results (Our Work)</td>
+                    </tr>
+                    <tr>
+                      <td>YOLOv10-N</td>
+                      <td>59.5</td>
+                      <td>39.1</td>
+                      <td>63.0</td>
+                      <td><strong>2.7</strong></td>
+                      <td><strong>8.2</strong></td>
+                    </tr>
+                    <tr class="has-background-primary-light">
+                      <td><strong>YOLOv10-S</strong></td>
+                      <td><strong>76.1</strong></td>
+                      <td><strong>51.7</strong></td>
+                      <td>67.5</td>
+                      <td>8.0</td>
+                      <td>24.5</td>
+                    </tr>
+                    <tr class="has-background-primary-light">
+                      <td><strong>YOLOv10-M</strong></td>
+                      <td>75.9</td>
+                      <td><strong>51.9</strong></td>
+                      <td><strong>67.8</strong></td>
+                      <td>16.5</td>
+                      <td>63.5</td>
+                    </tr>
+                    <tr>
+                      <td>YOLOv10-L</td>
+                      <td>70.9</td>
+                      <td>46.6</td>
+                      <td>68.7</td>
+                      <td>25.7</td>
+                      <td>126.4</td>
+                    </tr>
+                    <tr>
+                      <td>YOLOv10-X</td>
+                      <td>76.2</td>
+                      <td>48.2</td>
+                      <td><strong>69.8</strong></td>
+                      <td>31.6</td>
+                      <td>169.9</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="metric-highlight">
+                <h4 class="title is-5">Key Performance Highlights:</h4>
+                <div class="results-grid">
+                  <div class="result-item">
+                    <h5 class="title is-6">🎯 Best mAP@50-95</h5>
+                    <p><strong>YOLOv10-M: 51.9%</strong></p>
+                    <p>+8.6% improvement over YOLOv9-E</p>
+                  </div>
+                  <div class="result-item">
+                    <h5 class="title is-6">⚡ Most Efficient</h5>
+                    <p><strong>YOLOv10-N: 2.7M params</strong></p>
+                    <p>Extremely lightweight for deployment</p>
+                  </div>
+                  <div class="result-item">
+                    <h5 class="title is-6">🏆 Best mAP@50</h5>
+                    <p><strong>YOLOv10-X: 76.2%</strong></p>
+                    <p>Superior detection accuracy</p>
+                  </div>
+                  <div class="result-item">
+                    <h5 class="title is-6">⚖️ Best Balance</h5>
+                    <p><strong>YOLOv10-S: 76.1% mAP@50</strong></p>
+                    <p>Optimal performance-efficiency trade-off</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dataset & Methodology -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Dataset & Methodology</h2>
+            <div class="content has-text-justified">
+              <div class="metric-highlight">
+                <h4 class="title is-5">GRAZPEDWRI-DX Dataset:</h4>
+                <div class="results-grid">
+                  <div class="result-item">
+                    <h5 class="title is-6">📊 Dataset Split</h5>
+                    <p><strong>Training:</strong> 15,245 images (75%)</p>
+                    <p><strong>Validation:</strong> 4,066 images (20%)</p>
+                    <p><strong>Testing:</strong> 1,016 images (5%)</p>
+                  </div>
+                  <div class="result-item">
+                    <h5 class="title is-6">🏷️ Detection Classes</h5>
+                    <p><strong>9 Classes:</strong></p>
+                    <p>Fracture, Bone Anomaly, Metal, Foreign Body, Soft Tissue, etc.</p>
+                  </div>
+                  <div class="result-item">
+                    <h5 class="title is-6">🔬 Medical Focus</h5>
+                    <p><strong>Pediatric Wrist X-rays</strong></p>
+                    <p>Specialized dataset for child healthcare</p>
+                  </div>
+                  <div class="result-item">
+                    <h5 class="title is-6">📈 Dual Label Assignment</h5>
+                    <p><strong>Novel Training Strategy</strong></p>
+                    <p>Enhanced label assignment for better performance</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="highlight-box">
+                <h4 class="title is-5">Training Configuration:</h4>
+                <ul style="text-align: left">
+                  <li><strong>Input Size:</strong> 640×640 pixels</li>
+                  <li><strong>Batch Size:</strong> 32</li>
+                  <li><strong>Epochs:</strong> 100</li>
+                  <li><strong>Workers:</strong> 8 (data loading threads)</li>
+                  <li><strong>Hardware:</strong> NVIDIA GPU + CUDA CuDNN</li>
+                  <li><strong>Environment:</strong> Python 3.12, PyTorch 2.3</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Research Impact -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Research Impact & Applications</h2>
+            <div class="content has-text-justified">
+              <div class="research-question">
+                <p>
+                  <strong>Clinical Significance:</strong> This research addresses a critical healthcare need 
+                  in pediatric medicine, where accurate and rapid fracture detection can significantly impact 
+                  treatment outcomes and long-term child development.
+                </p>
+              </div>
+
+              <div class="results-grid">
+                <div class="metric-highlight">
+                  <h4 class="title is-6">🏥 Clinical Applications</h4>
+                  <ul style="text-align: left">
+                    <li>Emergency department screening</li>
+                    <li>Radiologist assistance tools</li>
+                    <li>Telemedicine support</li>
+                    <li>Second opinion systems</li>
+                  </ul>
+                </div>
+                <div class="metric-highlight">
+                  <h4 class="title is-6">⚡ Performance Benefits</h4>
+                  <ul style="text-align: left">
+                    <li>Real-time detection capability</li>
+                    <li>Reduced diagnostic time</li>
+                    <li>Improved accuracy over previous methods</li>
+                    <li>Scalable deployment options</li>
+                  </ul>
+                </div>
+                <div class="metric-highlight">
+                  <h4 class="title is-6">🌟 Innovation Highlights</h4>
+                  <ul style="text-align: left">
+                    <li>First comprehensive YOLOv10 evaluation for fractures</li>
+                    <li>Dual label assignment strategy</li>
+                    <li>Multiple model variants analyzed</li>
+                    <li>Open-source implementation</li>
+                  </ul>
+                </div>
+                <div class="metric-highlight">
+                  <h4 class="title is-6">📊 Papers with Code Rankings</h4>
+                  <ul style="text-align: left">
+                    <li>State-of-the-art on GRAZPEDWRI-DX</li>
+                    <li>Fracture detection leaderboard</li>
+                    <li>Object detection benchmark</li>
+                    <li>Medical imaging applications</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Implementation & Usage -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Implementation & Usage</h2>
+            <div class="content has-text-justified">
+              <div class="highlight-box">
+                <p>
+                  <strong>Easy to Use:</strong> Our implementation provides a simple interface for both 
+                  research and clinical applications. The system includes pre-trained weights and a 
+                  Gradio-based web interface for immediate deployment.
+                </p>
+              </div>
+
+              <div class="metric-highlight">
+                <h4 class="title is-5">Quick Start:</h4>
+                <pre style="background-color: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code># Install dependencies
+pip install -r requirements.txt
+
+# Train a model
+from ultralytics import YOLO
+model = YOLO("yolov10x.pt")
+results = model.train(data='dataset/meta.yaml', epochs=100, imgsz=640, batch=32, name='x')
+
+# Run inference
+python src/app.py</code></pre>
+              </div>
+
+              <div class="results-grid">
+                <div class="result-item">
+                  <h5 class="title is-6">🔗 GitHub Repository</h5>
+                  <p>Complete source code and documentation</p>
+                  <a href="https://github.com/ammarlodhi255/YOLOv10-Fracture-Detection" class="button is-small is-primary">View Code</a>
+                </div>
+                <div class="result-item">
+                  <h5 class="title is-6">📦 Pre-trained Weights</h5>
+                  <p>Ready-to-use model weights for all variants</p>
+                  <a href="https://figshare.com/articles/online_resource/Weights/26343553" class="button is-small is-primary">Download</a>
+                </div>
+                <div class="result-item">
+                  <h5 class="title is-6">🗃️ Dataset Access</h5>
+                  <p>GRAZPEDWRI-DX dataset for research</p>
+                  <a href="https://figshare.com/articles/dataset/GRAZPEDWRI-DX/14825193" class="button is-small is-primary">Access</a>
+                </div>
+                <div class="result-item">
+                  <h5 class="title is-6">🌐 Gradio Interface</h5>
+                  <p>Web-based demonstration interface</p>
+                  <span class="button is-small is-primary is-static">Built-in</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Future Work -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Future Directions</h2>
+            <div class="content has-text-justified">
+              <div
+                style="
+                  background-color: #f8f9fa;
+                  padding: 1.5rem;
+                  border-radius: 8px;
+                  margin: 1rem 0;
+                "
+              >
+                <p>
+                  This work establishes a new baseline for automated pediatric fracture detection 
+                  and opens several avenues for future research and clinical implementation:
+                </p>
+                <ul style="text-align: left; margin-top: 1rem">
+                  <li>
+                    <strong>Multi-modal Integration:</strong> Combining X-ray data with clinical information and patient history
+                  </li>
+                  <li>
+                    <strong>Real-time Clinical Deployment:</strong> Integration with hospital PACS systems and clinical workflows
+                  </li>
+                  <li>
+                    <strong>Extended Anatomical Coverage:</strong> Expansion to other pediatric bone fracture types and anatomical regions
+                  </li>
+                  <li>
+                    <strong>Uncertainty Quantification:</strong> Adding confidence estimation and uncertainty measures for clinical decision support
+                  </li>
+                  <li>
+                    <strong>Federated Learning:</strong> Collaborative training across multiple medical institutions while preserving privacy
+                  </li>
+                  <li>
+                    <strong>Mobile Applications:</strong> Lightweight models for point-of-care diagnosis on mobile devices
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact & Citation -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Citation & Contact</h2>
+            <div class="content has-text-justified">
+              <div class="metric-highlight">
+                <div class="columns">
+                  <div class="column">
+                    <h4 class="title is-5">Authors</h4>
+                    <p>
+                      <strong>Ammar Ahmed</strong> - Lead Author<br>
+                      <strong>Abdul Manaf</strong> - Co-Author
+                    </p>
+                    <p>
+                      <strong>Publication:</strong> arXiv:2407.15689 [eess.IV]<br>
+                      <strong>Submitted:</strong> July 22, 2024<br>
+                      <strong>Last Revised:</strong> July 31, 2024
+                    </p>
+                  </div>
+                  <div class="column">
+                    <h4 class="title is-5">Resources</h4>
+                    <p>
+                      <strong>Paper:</strong>
+                      <a href="https://arxiv.org/abs/2407.15689">arXiv:2407.15689</a>
+                    </p>
+                    <p>
+                      <strong>Code:</strong>
+                      <a href="https://github.com/ammarlodhi255/YOLOv10-Fracture-Detection">GitHub Repository</a>
+                    </p>
+                    <p>
+                      <strong>DOI:</strong>
+                      <a href="https://doi.org/10.48550/arXiv.2407.15689">10.48550/arXiv.2407.15689</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style="
+                  text-align: center;
+                  margin: 2rem 0;
+                  padding: 1rem;
+                  background-color: #f0f7ff;
+                  border-radius: 8px;
+                "
+              >
+                <p>
+                  <em>
+                    If you find our work useful in your research, please consider citing our paper. 
+                    This research contributes to advancing AI-assisted medical diagnosis in pediatric healthcare.
+                  </em>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
